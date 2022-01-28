@@ -70,7 +70,7 @@ export default function AddItem() {
         setItem([...items])
         if (items[itemIndex].quantity < 0) {
             setItem(items.filter(item => item.item_name !== items[itemIndex].item_name))
-            delete items[items[itemIndex].item_name]
+            delete items[items[itemIndex].item_name];
         }
         // console.log(items);
     };
@@ -79,6 +79,12 @@ export default function AddItem() {
         localStorage.setItem("items_LocalStorage", JSON.stringify(items));
     }
 
+    const removeItem = (event) => {
+        const itemIndex = event.target.value;
+        // setItem([...items]);
+        setItem(items.filter(item => item.item_name !== items[itemIndex].item_name))
+        delete items[items[itemIndex].item_name];
+    }
 
 
     return (
@@ -92,7 +98,7 @@ export default function AddItem() {
 
                     <Form.Group className="mb-3" controlId="formBasicExpirationDate">
                         <Form.Label>Expiration or Best Before Date:</Form.Label>
-                        <Form.Control type="text" placeholder="Enter item's expiration or best before date" name="expiration_date" />
+                        <Form.Control type="date" placeholder="Enter item's expiration or best before date" name="expiration_date" />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicQuantity">
@@ -134,6 +140,7 @@ export default function AddItem() {
                                         <td>
                                             <Button variant="success" onClick={event => incrementQuantity(event)} value={index}>Add</Button>
                                             <Button variant="danger" onClick={event => decrementQuantity(event)} value={index} >Minus</Button>
+                                            <Button variant="warning" onClick={event => removeItem(event)} value={index} >Remove</Button>
                                         </td>
                                     </tr>
                                 )
