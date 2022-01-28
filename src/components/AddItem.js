@@ -2,11 +2,21 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function AddItem() {
     // syntax: type-of-data [statedate, stateupdatefunction] = useState(initialdata);
     const [items, setItem] = useState([]);
+
+    useEffect(() => {
+        let fetchedData = localStorage.getItem('items_LocalStorage');
+
+        if (fetchedData) {
+            let dataDict = JSON.parse(fetchedData);
+            //console.log(dataDict)
+            setItem(dataDict)
+        }
+    }, [])
 
     // AddItem Handler
     const addItem = (event) => {
@@ -66,8 +76,10 @@ export default function AddItem() {
     };
 
     const saveToLocalStorage = (event) => {
-        console.log(localStorage.setItem("items_LocalStorage", JSON.stringify(items)));
+        localStorage.setItem("items_LocalStorage", JSON.stringify(items));
     }
+
+
 
     return (
         <div>
