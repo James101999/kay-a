@@ -110,7 +110,7 @@ export default function AddItem() {
             </div>
 
             <div id="itemTable">
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover >
 
                     <thead>
                         <tr>
