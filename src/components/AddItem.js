@@ -1,12 +1,18 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
+import Stack from 'react-bootstrap/Stack';
 
 import { useEffect, useState } from 'react';
 
-export default function AddItem() {
+function AddItem() {
     // syntax: type-of-data [statedate, stateupdatefunction] = useState(initialdata);
     const [items, setItem] = useState([]);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         let fetchedData = localStorage.getItem('items_LocalStorage');
@@ -77,6 +83,7 @@ export default function AddItem() {
 
     const saveToLocalStorage = (event) => {
         localStorage.setItem("items_LocalStorage", JSON.stringify(items));
+        handleClose();
     }
 
     const removeItem = (event) => {
@@ -87,33 +94,49 @@ export default function AddItem() {
     }
 
 
-    return (
-        <div>
-            <div id="addItemForm">
-                <Form onSubmit={addItem}>
-                    <Form.Group className="mb-3" controlId="formBasicItemName">
-                        <Form.Label>Item Name:</Form.Label>
-                        <Form.Control type="text" placeholder="Enter item's name" name="item_name" />
-                    </Form.Group>
+return (
+    <div>
+      <Stack direction="horizontal" gap={2}>
+        <div className="ms-auto">
+          <Button size="lg" variant="success" active
+                  onClick={handleShow}>
+            Add Item
+          </Button>
+        </div>
+        <Button size="lg" variant="primary" active
+                onClick={saveToLocalStorage}>
+          Save
+        </Button>
+      </Stack>
+          <Modal show={show} onHide={handleClose}>
+            <Form onSubmit={addItem}>
+            <Modal.Body>
+              <Form.Group className="mb-3" controlId="formBasicItemName">
+                <Form.Label>Item Name:</Form.Label>
+                <Form.Control type="text" placeholder="Enter item's name" name="item_name" />
+              </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicExpirationDate">
-                        <Form.Label>Expiration or Best Before Date:</Form.Label>
-                        <Form.Control type="date" placeholder="Enter item's expiration or best before date" name="expiration_date" />
-                    </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicExpirationDate">
+                <Form.Label>Expiration or Best Before Date:</Form.Label>
+                <Form.Control type="date" placeholder="Enter item's expiration or best before date" name="expiration_date" />
+              </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicQuantity">
-                        <Form.Label>Quantity:</Form.Label>
-                        <Form.Control type="number" placeholder="Enter item's quantity" name="quantity" />
-                    </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicQuantity">
+                <Form.Label>Quantity:</Form.Label>
+                <Form.Control type="number" placeholder="Enter item's quantity" name="quantity" />
+              </Form.Group>
+            </Modal.Body>
 
-                    <Button variant="primary" type="submit">
-                        Add
-                    </Button>
-                    <Button variant="primary" onClick={saveToLocalStorage}>
-                        Save
-                    </Button>
-                </Form>
-            </div>
+            <Modal.Footer>
+              <Button variant="primary" type="submit">
+                Add
+              </Button>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+            </Form>
+          </Modal>
 
             <div id="itemTable">
                 <Table striped bordered hover >
@@ -152,4 +175,6 @@ export default function AddItem() {
             </div>
         </div>
     );
-}
+};
+
+export default AddItem;
